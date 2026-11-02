@@ -4,118 +4,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CASE ARCHIVE | Investigation System</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>CASE ARCHIVE</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:#080d16;
-  --panel:#111b2a;
-  --line:#2a394c;
-  --text:#e5ebf3;
-  --muted:#8795a8;
-  --blue:#82a9d7;
-  --red:#d96a6a;
-}
+:root{--bg:#080d16;--panel:#111b2a;--line:#2a394c;--text:#e5ebf3;--muted:#8795a8}
 *{box-sizing:border-box}
-body{
-  margin:0;background:#05080e;color:var(--text);
-  font-family:'Noto Sans KR',sans-serif;overflow:hidden;
-}
+body{margin:0;background:#05080e;color:var(--text);font-family:'Noto Sans KR',sans-serif;overflow:hidden}
 button{font:inherit;cursor:pointer}
 .hidden{display:none!important}
 #app{width:100vw;height:100dvh;position:relative;overflow:hidden;background:#080d16}
-.scene{position:absolute;inset:0;transition:opacity .7s,transform 1.2s;}
+.scene{position:absolute;inset:0;transition:opacity .7s,transform 1.2s}
 
-/* LOCK SCREEN */
-#lock{
-  z-index:20;display:flex;align-items:center;justify-content:center;
-  text-align:center;flex-direction:column;
-  background:
-    linear-gradient(110deg,rgba(4,9,17,.78),rgba(4,9,17,.35)),
-    radial-gradient(ellipse at 75% 25%,#33465a 0%,transparent 38%),
-    linear-gradient(145deg,#172638,#080d16 65%);
-}
-#lock:before{
-  content:"";position:absolute;inset:0;opacity:.35;
-  background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 4px);
-  pointer-events:none;
-}
+/* 잠금 화면 */
+#lock{z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;background:linear-gradient(110deg,rgba(4,9,17,.78),rgba(4,9,17,.35)),radial-gradient(ellipse at 75% 25%,#33465a 0%,transparent 38%),linear-gradient(145deg,#172638,#080d16 65%)}
+#lock:before{content:"";position:absolute;inset:0;opacity:.35;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 4px);pointer-events:none}
 .lock-content{position:relative;z-index:1}
 .lock-time{font-size:clamp(64px,13vw,112px);font-weight:400;letter-spacing:-5px}
 .lock-date{font-size:15px;color:#d1d9e4;margin-top:3px}
 .lock-bottom{position:absolute;bottom:12%;font-size:13px;color:#c2ccd8;animation:blink 2s infinite}
-@keyframes blink{50%{opacity:.35}}
 .lock-small{position:absolute;top:25px;left:28px;font:12px 'IBM Plex Mono';letter-spacing:2px;color:#aab8c8}
+@keyframes blink{50%{opacity:.35}}
 
-/* DESKTOP */
-#desktop{
-  z-index:5;opacity:0;
-  background:
-    radial-gradient(ellipse at 70% 30%,rgba(46,70,96,.5),transparent 45%),
-    linear-gradient(125deg,#101d2e,#080d16 70%);
-}
+/* 바탕화면 */
+#desktop{z-index:5;opacity:0;background:radial-gradient(ellipse at 70% 30%,rgba(46,70,96,.5),transparent 45%),linear-gradient(125deg,#101d2e,#080d16 70%)}
 #desktop.active{opacity:1}
-.desktop-top{
-  height:34px;border-bottom:1px solid rgba(255,255,255,.08);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;font:11px 'IBM Plex Mono';color:#aab8c8;
-  background:rgba(5,9,16,.45)
-}
-.desktop-icons{
-  padding:25px 18px;display:grid;grid-template-columns:90px;
-  gap:19px;width:115px;
-}
-.desk-icon{
-  border:0;background:transparent;color:#e3e9f1;
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  font-size:11px;text-shadow:0 2px 5px #000;
-  padding:7px 2px;border-radius:5px;
-}
+.desktop-top{height:34px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:11px 'IBM Plex Mono';color:#aab8c8;background:rgba(5,9,16,.45)}
+.desktop-icons{padding:20px 18px;display:grid;grid-template-columns:90px;gap:10px;width:115px;max-height:calc(100dvh - 100px);overflow-y:auto}
+.desk-icon{border:0;background:transparent;color:#e3e9f1;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:11px;text-shadow:0 2px 5px #000;padding:5px 2px;border-radius:5px}
 .desk-icon:hover{background:rgba(160,190,225,.15)}
-.desk-icon .ico{font-size:30px;filter:drop-shadow(0 3px 4px #000)}
-.taskbar{
-  position:absolute;bottom:0;left:0;right:0;height:43px;
-  background:rgba(8,13,21,.92);border-top:1px solid #344154;
-  display:flex;align-items:center;justify-content:space-between;padding:0 17px;
-  font-size:12px;color:#b8c4d2;
-}
+.desk-icon .ico{font-size:28px;filter:drop-shadow(0 3px 4px #000)}
+.taskbar{position:absolute;bottom:0;left:0;right:0;height:43px;background:rgba(8,13,21,.92);border-top:1px solid #344154;display:flex;align-items:center;justify-content:space-between;padding:0 17px;font-size:12px;color:#b8c4d2}
 .task-left{display:flex;gap:18px;align-items:center}
 .task-time{font-family:'IBM Plex Mono'}
 
-/* WINDOWS */
-.window{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:min(760px,92vw);max-height:78dvh;overflow:auto;
-  background:rgba(17,27,42,.97);border:1px solid #53647b;
-  box-shadow:0 22px 70px #000b;border-radius:7px;
-  animation:openWindow .22s ease-out;
-}
+/* 창 */
+.window{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,92vw);max-height:78dvh;overflow:auto;background:rgba(17,27,42,.97);border:1px solid #53647b;box-shadow:0 22px 70px #000b;border-radius:7px;animation:openWindow .22s ease-out}
 @keyframes openWindow{from{opacity:0;transform:translate(-50%,-48%) scale(.97)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-.window-head{
-  height:42px;background:#1c2a3d;border-bottom:1px solid #43546a;
-  display:flex;align-items:center;justify-content:space-between;padding:0 14px;
-  font-size:13px;font-weight:600;position:sticky;top:0;z-index:2;
-}
-.close{
-  background:transparent;border:0;color:#cbd5e1;font-size:20px;
-  width:30px;height:30px;border-radius:4px;
-}
+.window-head{height:42px;background:#1c2a3d;border-bottom:1px solid #43546a;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:13px;font-weight:600;position:sticky;top:0;z-index:2}
+.close{background:transparent;border:0;color:#cbd5e1;font-size:20px;width:30px;height:30px;border-radius:4px}
 .close:hover{background:#9c4545}
 .window-body{padding:20px}
 .sub-label{font:10px 'IBM Plex Mono';color:#8395ad;letter-spacing:1.4px}
 .section-title{font-size:19px;margin:5px 0 17px}
 .person-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.person{
-  background:#172438;border:1px solid #34455d;border-radius:5px;
-  padding:12px 7px;text-align:center;color:#e5ebf3;
-}
+.person{background:#172438;border:1px solid #34455d;border-radius:5px;padding:12px 7px;text-align:center;color:#e5ebf3}
 .person:hover{border-color:#91b6e4;background:#20324a}
-.person-photo{
-  height:90px;background:linear-gradient(145deg,#53657b,#1b2939);
-  margin-bottom:9px;display:flex;align-items:center;justify-content:center;
-  color:#dce5ef;font-size:25px;overflow:hidden;
-}
+.person-photo{height:90px;background:linear-gradient(145deg,#53657b,#1b2939);margin-bottom:9px;display:flex;align-items:center;justify-content:center;color:#dce5ef;font-size:25px;overflow:hidden}
 .person-photo img{width:100%;height:100%;object-fit:cover}
 .person strong{font-size:13px;display:block}
 .person small{font:10px 'IBM Plex Mono';color:#a6b4c5;display:block;margin-top:4px}
@@ -130,16 +64,10 @@ button{font:inherit;cursor:pointer}
 .warning{color:#e58b8b!important}
 .note-box{margin-top:15px;padding:13px;background:#202d3d;border-left:3px solid #9d6262;font-size:12px;line-height:1.8}
 .report-list{display:flex;flex-direction:column;gap:9px}
-.report{
-  border:1px solid #34455b;background:#172438;padding:13px;
-  display:grid;grid-template-columns:105px 1fr;gap:10px;font-size:12px;
-}
+.report{border:1px solid #34455b;background:#172438;padding:13px;display:grid;grid-template-columns:105px 1fr;gap:10px;font-size:12px}
 .report-date{font:11px 'IBM Plex Mono';color:#9eb1c8}
 .report-status{color:#d5b77d;font-size:10px;margin-top:5px}
-.file-row{
-  display:flex;align-items:center;gap:12px;padding:13px;
-  border-bottom:1px solid #2a394c;font-size:13px;
-}
+.file-row{display:flex;align-items:center;gap:12px;padding:13px;border-bottom:1px solid #2a394c;font-size:13px}
 .file-row button{margin-left:auto;background:#25364b;border:1px solid #52647b;color:white;padding:7px 12px;border-radius:3px;font-size:11px}
 .file-row button:hover{background:#354e6c}
 .timeline{border-left:1px solid #647b96;margin-left:8px;padding-left:20px}
@@ -147,240 +75,211 @@ button{font:inherit;cursor:pointer}
 .timeline-item:before{content:"";position:absolute;left:-25px;top:5px;width:8px;height:8px;border-radius:50%;background:#9ab7dc}
 .timeline-item time{font:11px 'IBM Plex Mono';color:#9ab7dc;display:block}
 
-/* ROOM / NOTEBOOK SCENE */
-#room{
-  z-index:10;opacity:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse at 75% 25%,rgba(183,130,77,.18),transparent 35%),
-    linear-gradient(120deg,#17191b,#30251e 55%,#100f0e);
-}
+/* 책상 장면 */
+#room{z-index:10;opacity:0;pointer-events:none;background:radial-gradient(ellipse at 75% 25%,rgba(183,130,77,.18),transparent 35%),linear-gradient(120deg,#17191b,#30251e 55%,#100f0e)}
 #room.active{opacity:1;pointer-events:auto}
-.room-caption{
-  position:absolute;top:18px;left:22px;color:#aeb8c3;
-  font:10px 'IBM Plex Mono';letter-spacing:2px;
-}
-.desk-surface{
-  position:absolute;left:0;right:0;bottom:0;height:66%;
-  background:
-    repeating-linear-gradient(95deg,rgba(255,255,255,.018) 0 2px,transparent 3px 12px),
-    linear-gradient(110deg,#38291f,#76523a 48%,#2a1d16);
-  box-shadow:0 -15px 35px #0008;
-}
-.notebook{
-  position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-3deg);
-  width:min(590px,82vw);height:min(390px,58dvh);
-  background:#e5ddc9;color:#302c27;border-radius:3px;
-  box-shadow:0 20px 50px #0009;padding:30px 35px;
-  overflow:hidden;
-}
-.notebook:before{
-  content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:#b58d7b;
-}
-.paper-heading{
-  font:17px 'IBM Plex Mono';letter-spacing:2px;border-bottom:1px solid #b5a995;
-  padding:0 0 12px 12px;color:#514a40;
-}
+.room-caption{position:absolute;top:18px;left:22px;color:#aeb8c3;font:10px 'IBM Plex Mono';letter-spacing:2px}
+.desk-surface{position:absolute;left:0;right:0;bottom:0;height:66%;background:repeating-linear-gradient(95deg,rgba(255,255,255,.018) 0 2px,transparent 3px 12px),linear-gradient(110deg,#38291f,#76523a 48%,#2a1d16);box-shadow:0 -15px 35px #0008}
+.notebook{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) rotate(-3deg);width:min(590px,82vw);height:min(390px,58dvh);background:#e5ddc9;color:#302c27;border-radius:3px;box-shadow:0 20px 50px #0009;padding:30px 35px;overflow:hidden}
+.notebook:before{content:"";position:absolute;left:24px;top:0;bottom:0;width:2px;background:#b58d7b}
+.paper-heading{font:17px 'IBM Plex Mono';letter-spacing:2px;border-bottom:1px solid #b5a995;padding:0 0 12px 12px;color:#514a40}
 .paper-date{text-align:right;font:12px 'IBM Plex Mono';color:#71695c;margin-top:10px}
-.handwriting{
-  font:25px 'Nanum Pen Script',cursive;color:#34322f;
-  line-height:1.65;margin:15px 0 0 12px;
-}
-.hand-line{
-  width:0;overflow:hidden;white-space:nowrap;
-  animation:write 2.1s steps(32,end) forwards;
-  border-bottom:1px solid rgba(80,70,60,.08);
-}
+.handwriting{font:25px 'Nanum Pen Script',cursive;color:#34322f;line-height:1.65;margin:15px 0 0 12px}
+.hand-line{width:0;overflow:hidden;white-space:nowrap;animation:write 2.1s steps(32,end) forwards;border-bottom:1px solid rgba(80,70,60,.08)}
 .hand-line:nth-child(2){animation-delay:2.2s}
 .hand-line:nth-child(3){animation-delay:4.4s}
 .hand-line:nth-child(4){animation-delay:6.6s}
 @keyframes write{to{width:100%}}
-.phone{
-  position:absolute;right:8%;bottom:9%;width:90px;height:175px;
-  border:5px solid #171a20;border-radius:18px;background:#080b10;
-  box-shadow:0 10px 30px #0009;display:flex;align-items:center;
-  justify-content:center;flex-direction:column;gap:13px;
-  transform:rotate(7deg);color:white;
-}
+.phone{position:absolute;right:8%;bottom:9%;width:90px;height:175px;border:5px solid #171a20;border-radius:18px;background:#080b10;box-shadow:0 10px 30px #0009;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:13px;transform:rotate(7deg);color:white}
 .phone .phone-screen{font-size:10px;text-align:center;color:#b8c4d4}
 .phone .phone-symbol{font-size:23px}
+.phone-button{border:0;border-radius:50%;width:37px;height:37px;background:#419b69;color:white;font-size:17px}
 .phone.ringing{animation:ring .16s infinite alternate}
 @keyframes ring{from{transform:rotate(5deg)}to{transform:rotate(10deg)}}
-.phone-button{
-  border:0;border-radius:50%;width:37px;height:37px;background:#419b69;color:white;font-size:17px;
-}
-.room-controls{
-  position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
-  display:flex;gap:10px;white-space:nowrap;
-}
-.action{
-  background:#1b2939;border:1px solid #63758b;color:#e9eef5;
-  padding:10px 17px;border-radius:4px;font-size:12px;
-}
+.room-controls{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:10px;white-space:nowrap}
+.action{background:#1b2939;border:1px solid #63758b;color:#e9eef5;padding:10px 17px;border-radius:4px;font-size:12px}
 .action:hover{background:#2e435c}
-#callOverlay{
-  position:absolute;inset:0;background:rgba(3,7,12,.93);z-index:12;
-  display:flex;align-items:center;justify-content:center;text-align:center;
-}
+
+/* 통화 */
+#callOverlay{position:absolute;inset:0;background:rgba(3,7,12,.93);z-index:12;display:flex;align-items:center;justify-content:center;text-align:center}
 .call-card{width:min(390px,88vw)}
-.call-avatar{
-  width:85px;height:85px;border-radius:50%;margin:0 auto 20px;
-  background:#26364b;display:flex;align-items:center;justify-content:center;font-size:35px;
-}
+.call-avatar{width:85px;height:85px;border-radius:50%;margin:0 auto 20px;background:#26364b;display:flex;align-items:center;justify-content:center;font-size:35px}
 .call-name{font-size:20px}
 .call-sub{font:11px 'IBM Plex Mono';color:#9cacc0;margin:8px 0 25px}
 .call-text{font-size:13px;line-height:2;color:#c5d0de;min-height:100px}
 .call-actions{display:flex;justify-content:center;gap:28px;margin-top:24px}
 .call-actions button{border:0;border-radius:50%;width:53px;height:53px;color:white;font-size:20px}
-.answer{background:#3d9b68}.end{background:#c34c54}
+.end{background:#c34c54}
 
-/* NEW REPORT */
-.toast{
-  position:absolute;right:22px;bottom:62px;width:min(330px,88vw);
-  background:#edf1f5;color:#182333;border-radius:5px;
-  box-shadow:0 12px 35px #0008;padding:17px;z-index:15;
-  animation:toastIn .4s ease-out;
-}
+/* 새 제보 알림 */
+.toast{position:absolute;right:22px;bottom:62px;width:min(330px,88vw);background:#edf1f5;color:#182333;border-radius:5px;box-shadow:0 12px 35px #0008;padding:17px;z-index:15;animation:toastIn .4s ease-out}
 @keyframes toastIn{from{transform:translateY(15px);opacity:0}to{transform:translateY(0);opacity:1}}
 .toast-top{font-size:11px;color:#b54e4e;font-weight:700}
 .toast-title{font-weight:700;margin:12px 0 5px;font-size:14px}
 .toast-desc{font-size:11px;color:#526174;line-height:1.7}
 .toast button{margin-top:12px;background:#1c2d43;color:white;border:0;padding:8px 13px;border-radius:3px;font-size:11px}
+
 @media(max-width:600px){
-  .person-grid{grid-template-columns:repeat(2,1fr)}
-  .case-layout{grid-template-columns:1fr}
-  .case-photo{height:150px}
-  .window-body{padding:14px}
-  .window{max-height:82dvh}
-  .notebook{height:340px;padding:24px 26px}
-  .handwriting{font-size:21px}
-  .phone{right:3%;bottom:5%;transform:scale(.78) rotate(7deg);transform-origin:bottom right}
-  .room-controls{bottom:12px}
+.person-grid{grid-template-columns:repeat(2,1fr)}
+.case-layout{grid-template-columns:1fr}
+.case-photo{height:150px}
+.window-body{padding:14px}
+.window{max-height:82dvh}
+.notebook{height:340px;padding:24px 26px}
+.handwriting{font-size:21px}
+.phone{right:3%;bottom:5%;transform:scale(.78) rotate(7deg);transform-origin:bottom right}
+.room-controls{bottom:12px}
 }
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- LOCK SCREEN -->
-  <section id="lock" class="scene">
-    <div class="lock-small">PRIVATE INVESTIGATION SYSTEM</div>
-    <div class="lock-content">
-      <div class="lock-time">08:08</div>
-      <div class="lock-date">2026년 11월 2일 월요일</div>
-    </div>
-    <div class="lock-bottom">화면을 클릭하여 잠금을 해제하세요</div>
-  </section>
+<section id="lock" class="scene">
+  <div class="lock-small">PRIVATE INVESTIGATION SYSTEM</div>
+  <div class="lock-content">
+    <div class="lock-time">08:08</div>
+    <div class="lock-date">2026년 11월 2일 월요일</div>
+  </div>
+  <div class="lock-bottom">화면을 클릭하여 잠금을 해제하세요</div>
+</section>
 
-  <!-- DESKTOP -->
-  <section id="desktop" class="scene">
-    <div class="desktop-top">
-      <span>CASE ARCHIVE / LOCAL SYSTEM</span>
-      <span>SECURE CONNECTION　●</span>
-    </div>
-    <div class="desktop-icons">
-      <button class="desk-icon" onclick="openPeople()"><span class="ico">📁</span>실종자 명단</button>
-      <button class="desk-icon" onclick="openReports()"><span class="ico">📄</span>목격자 진술</button>
-      <button class="desk-icon" onclick="openCCTV()"><span class="ico">▶</span>CCTV 자료</button>
-      <button class="desk-icon" onclick="openTimeline()"><span class="ico">📁</span>사건 타임라인</button>
-      <button class="desk-icon" onclick="openNotes()"><span class="ico">📓</span>수사 기록</button>
-      <button class="desk-icon" onclick="openCalls()"><span class="ico">☎</span>통화 기록</button>
-      <button class="desk-icon" onclick="goRoom()"><span class="ico">🗒️</span>개인 메모</button>
-    </div>
-    <div class="taskbar">
-      <div class="task-left"><span>▦</span><span>CASE ARCHIVE</span><span>● 시스템 연결됨</span></div>
-      <span class="task-time">2026.11.02　20:08</span>
-    </div>
-  </section>
+<section id="desktop" class="scene">
+  <div class="desktop-top">
+    <span>CASE ARCHIVE / LOCAL SYSTEM</span>
+    <span>SECURE CONNECTION　●</span>
+  </div>
 
-  <!-- ROOM -->
-  <section id="room" class="scene">
-    <div class="room-caption">PERSONAL INVESTIGATION ROOM / 20:08</div>
-    <div class="desk-surface"></div>
-    <div class="notebook">
-      <div class="paper-heading">INVESTIGATION NOTE</div>
-      <div class="paper-date">2026. 11. 02.</div>
-      <div class="handwriting" id="writing">
-        <div class="hand-line">- 김주은에 대한 목격 신고가 또 접수되었다.</div>
-        <div class="hand-line">- 이번 신고 역시 이전과 다른 장소에서 접수됨.</div>
-        <div class="hand-line">- 신고자는 목격 당시의 상황을 정확히 기억하지 못한다.</div>
-        <div class="hand-line">- 그런데 한 가지 이상한 점이 있다.</div>
-      </div>
-    </div>
-    <div class="phone" id="phone">
-      <div class="phone-symbol">☎</div>
-      <div class="phone-screen">발신자 미상<br>전화 수신 중</div>
-      <button class="phone-button" onclick="answerCall()">✓</button>
-    </div>
-    <div class="room-controls">
-      <button class="action" onclick="returnDesktop()">컴퓨터로 돌아가기</button>
-    </div>
-  </section>
+  <div class="desktop-icons">
 
-  <!-- CALL -->
-  <div id="callOverlay" class="hidden">
-    <div class="call-card">
-      <div class="call-avatar">●</div>
-      <div class="call-name">발신자 미상</div>
-      <div class="call-sub" id="callStatus">통화 연결 중...</div>
-      <div class="call-text" id="callText">연결을 기다리는 중입니다.</div>
-      <div class="call-actions">
-        <button class="end" onclick="endCall()">✕</button>
-      </div>
+    <!-- 개인 메모를 첫 번째로 배치 -->
+    <button class="desk-icon" onclick="goRoom()">
+      <span class="ico">📓</span>개인 메모
+    </button>
+
+    <button class="desk-icon" onclick="openPeople()">
+      <span class="ico">📁</span>실종자 명단
+    </button>
+
+    <button class="desk-icon" onclick="openReports()">
+      <span class="ico">📄</span>목격자 진술
+    </button>
+
+    <button class="desk-icon" onclick="openCCTV()">
+      <span class="ico">▶</span>CCTV 자료
+    </button>
+
+    <button class="desk-icon" onclick="openTimeline()">
+      <span class="ico">📁</span>사건 타임라인
+    </button>
+
+    <button class="desk-icon" onclick="openNotes()">
+      <span class="ico">📓</span>수사 기록
+    </button>
+
+    <button class="desk-icon" onclick="openCalls()">
+      <span class="ico">☎</span>통화 기록
+    </button>
+
+  </div>
+
+  <div class="taskbar">
+    <div class="task-left">
+      <span>▦</span><span>CASE ARCHIVE</span><span>● 시스템 연결됨</span>
+    </div>
+    <span class="task-time">2026.11.02　20:08</span>
+  </div>
+</section>
+
+<section id="room" class="scene">
+  <div class="room-caption">PERSONAL INVESTIGATION ROOM / 20:08</div>
+  <div class="desk-surface"></div>
+
+  <div class="notebook">
+    <div class="paper-heading">INVESTIGATION NOTE</div>
+    <div class="paper-date">2026. 11. 02.</div>
+    <div class="handwriting" id="writing">
+      <div class="hand-line">- 김주은에 대한 목격 신고가 또 접수되었다.</div>
+      <div class="hand-line">- 이번 신고 역시 이전과 다른 장소에서 접수됨.</div>
+      <div class="hand-line">- 신고자는 목격 당시의 상황을 정확히 기억하지 못한다.</div>
+      <div class="hand-line">- 그런데 한 가지 이상한 점이 있다.</div>
     </div>
   </div>
 
-  <!-- WINDOW CONTAINER -->
-  <div id="windows"></div>
+  <div class="phone" id="phone">
+    <div class="phone-symbol">☎</div>
+    <div class="phone-screen">발신자 미상<br>전화 수신 중</div>
+    <button class="phone-button" onclick="answerCall()">✓</button>
+  </div>
 
-  <!-- TOAST -->
-  <div id="toast" class="toast hidden">
-    <div class="toast-top">● 새로운 목격 신고가 접수되었습니다.</div>
-    <div class="toast-title">김주은 / 신규 목격 신고</div>
-    <div class="toast-desc">2026.11.02　20:08 접수<br>김주은을 보았다는 새로운 신고가 접수되었습니다.</div>
-    <button onclick="openReports();hideToast()">자세히 보기</button>
-    <button onclick="hideToast()" style="background:#d9e0e8;color:#263448">닫기</button>
+  <div class="room-controls">
+    <button class="action" onclick="returnDesktop()">컴퓨터로 돌아가기</button>
+  </div>
+</section>
+
+<div id="callOverlay" class="hidden">
+  <div class="call-card">
+    <div class="call-avatar">●</div>
+    <div class="call-name">발신자 미상</div>
+    <div class="call-sub" id="callStatus">통화 연결 중...</div>
+    <div class="call-text" id="callText">연결을 기다리는 중입니다.</div>
+    <div class="call-actions">
+      <button class="end" onclick="endCall()">✕</button>
+    </div>
   </div>
 </div>
 
+<div id="windows"></div>
+
+<div id="toast" class="toast hidden">
+  <div class="toast-top">● 새로운 목격 신고가 접수되었습니다.</div>
+  <div class="toast-title">김주은 / 신규 목격 신고</div>
+  <div class="toast-desc">2026.11.02　20:08 접수<br>김주은을 보았다는 새로운 신고가 접수되었습니다.</div>
+  <button onclick="openReports();hideToast()">자세히 보기</button>
+  <button onclick="hideToast()" style="background:#d9e0e8;color:#263448">닫기</button>
+</div>
+
+</div>
+
 <script>
-const people = [
- {name:"지우",date:"2024.03.17",place:"경기도 여주시 ○○동",clothes:"검은색 후드 집업, 청바지, 흰 운동화",detail:"학교 인근에서 마지막으로 목격된 뒤 연락이 두절되었습니다."},
- {name:"르멘",date:"2024.05.29",place:"서울특별시 ○○구",clothes:"회색 니트, 검은색 바지",detail:"귀가하던 중 행방이 확인되지 않았습니다."},
- {name:"다현",date:"2024.08.11",place:"인천광역시 ○○구",clothes:"흰 셔츠, 검은색 가방",detail:"마지막 통화 이후 휴대전화가 꺼진 상태입니다."},
- {name:"하람",date:"2024.11.03",place:"경기도 수원시 ○○동",clothes:"남색 재킷, 운동화",detail:"주거지 근처에서 마지막으로 확인되었습니다."},
- {name:"주은",date:"2025.01.16",place:"경기도 성남시 ○○동",clothes:"검은색 외투, 회색 목도리",detail:"실종 이후 현재까지 여러 장소에서 목격 신고가 반복적으로 접수되고 있습니다."},
- {name:"유나",date:"2025.04.22",place:"서울특별시 ○○구",clothes:"아이보리색 가디건, 검은 가방",detail:"약속 장소에 나타나지 않은 뒤 연락이 끊겼습니다."},
- {name:"이안",date:"2025.07.09",place:"부산광역시 ○○구",clothes:"검은 반팔, 청바지",detail:"주변 CCTV에 마지막 모습이 확인되었습니다."},
- {name:"예온",date:"2025.10.31",place:"대전광역시 ○○구",clothes:"갈색 재킷, 검은색 운동화",detail:"귀가 경로 중 일부 구간의 행적이 확인되지 않습니다."}
+const people=[
+{name:"지우",date:"2024.03.17",place:"경기도 여주시 ○○동",clothes:"검은색 후드 집업, 청바지, 흰 운동화",detail:"학교 인근에서 마지막으로 목격된 뒤 연락이 두절되었습니다."},
+{name:"르멘",date:"2024.05.29",place:"서울특별시 ○○구",clothes:"회색 니트, 검은색 바지",detail:"귀가하던 중 행방이 확인되지 않았습니다."},
+{name:"다현",date:"2024.08.11",place:"인천광역시 ○○구",clothes:"흰 셔츠, 검은색 가방",detail:"마지막 통화 이후 휴대전화가 꺼진 상태입니다."},
+{name:"하람",date:"2024.11.03",place:"경기도 수원시 ○○동",clothes:"남색 재킷, 운동화",detail:"주거지 근처에서 마지막으로 확인되었습니다."},
+{name:"주은",date:"2025.01.16",place:"경기도 성남시 ○○동",clothes:"검은색 외투, 회색 목도리",detail:"실종 이후 현재까지 여러 장소에서 목격 신고가 반복적으로 접수되고 있습니다."},
+{name:"유나",date:"2025.04.22",place:"서울특별시 ○○구",clothes:"아이보리색 가디건, 검은 가방",detail:"약속 장소에 나타나지 않은 뒤 연락이 끊겼습니다."},
+{name:"이안",date:"2025.07.09",place:"부산광역시 ○○구",clothes:"검은 반팔, 청바지",detail:"주변 CCTV에 마지막 모습이 확인되었습니다."},
+{name:"예온",date:"2025.10.31",place:"대전광역시 ○○구",clothes:"갈색 재킷, 검은색 운동화",detail:"귀가 경로 중 일부 구간의 행적이 확인되지 않습니다."}
 ];
 
-let reports = [
- ["2025.01.20","역 인근에서 주은과 유사한 인물을 목격했다는 신고"],
- ["2025.02.03","편의점 CCTV에서 유사한 인물 확인 요청"],
- ["2025.02.19","주택가 골목에서 목격했다는 신고"],
- ["2025.03.11","신고자가 직접 대화했다고 진술"],
- ["2025.04.07","실종 당시와 유사한 복장 확인"],
- ["2025.06.14","버스 정류장에서 목격했다는 신고"],
- ["2025.08.22","다른 지역에서 유사 인물 신고"],
- ["2025.10.05","신고자가 주은의 이름을 먼저 언급"],
- ["2026.01.20","역 인근에서 목격 신고"],
- ["2026.02.03","편의점 CCTV 유사 인물 확인"],
- ["2026.03.11","주택가 골목 목격 신고"],
- ["2026.04.07","실종 당시와 유사한 복장 확인"]
+let reports=[
+["2025.01.20","역 인근에서 주은과 유사한 인물을 목격했다는 신고"],
+["2025.02.03","편의점 CCTV에서 유사한 인물 확인 요청"],
+["2025.02.19","주택가 골목에서 목격했다는 신고"],
+["2025.03.11","신고자가 직접 대화했다고 진술"],
+["2025.04.07","실종 당시와 유사한 복장 확인"],
+["2025.06.14","버스 정류장에서 목격했다는 신고"],
+["2025.08.22","다른 지역에서 유사 인물 신고"],
+["2025.10.05","신고자가 주은의 이름을 먼저 언급"],
+["2026.01.20","역 인근에서 목격 신고"],
+["2026.02.03","편의점 CCTV 유사 인물 확인"],
+["2026.03.11","주택가 골목 목격 신고"],
+["2026.04.07","실종 당시와 유사한 복장 확인"]
 ];
 
-const $ = id => document.getElementById(id);
-const windows = $("windows");
+const $=id=>document.getElementById(id);
+const windows=$("windows");
 
 function showWindow(title,body){
-  windows.innerHTML = `
-    <div class="window">
-      <div class="window-head">
-        <span>${title}</span>
-        <button class="close" onclick="closeWindow()">×</button>
-      </div>
-      <div class="window-body">${body}</div>
-    </div>`;
+  windows.innerHTML=`
+  <div class="window">
+    <div class="window-head">
+      <span>${title}</span>
+      <button class="close" onclick="closeWindow()">×</button>
+    </div>
+    <div class="window-body">${body}</div>
+  </div>`;
 }
 function closeWindow(){windows.innerHTML=""}
 
@@ -394,20 +293,24 @@ $("lock").addEventListener("click",()=>{
 
 function openPeople(){
   const cards=people.map((p,i)=>`
-    <button class="person" onclick="openCase(${i})">
-      <div class="person-photo">?</div>
-      <strong>${p.name}</strong>
-      <small>${p.date}</small>
-    </button>`).join("");
+  <button class="person" onclick="openCase(${i})">
+    <div class="person-photo">?</div>
+    <strong>${p.name}</strong>
+    <small>${p.date}</small>
+  </button>`).join("");
+
   showWindow("실종자 명단 — MISSING PERSONS DATABASE",`
     <div class="sub-label">CASE ARCHIVE / PERSONNEL</div>
     <div class="section-title">실종자 명단 <span style="font-size:12px;color:#91a3b8">총 8명</span></div>
     <div class="person-grid">${cards}</div>
-    <div class="note-box">※ 모든 인물의 정보는 조사 기록을 바탕으로 정리되었습니다.</div>`);
+    <div class="note-box">※ 모든 인물의 정보는 조사 기록을 바탕으로 정리되었습니다.</div>
+  `);
 }
+
 function openCase(i){
   const p=people[i];
   const isJ=i===4;
+
   showWindow(`개인 수사 기록 — ${p.name}`,`
     <div class="sub-label">PERSONAL CASE FILE / SUBJECT 00${i+1}</div>
     <div class="case-layout">
@@ -426,33 +329,43 @@ function openCase(i){
     </div>
     <div class="note-box">${p.detail}</div>
     ${isJ?`<div class="note-box warning">주의: 해당 인물에 대한 목격 신고가 지속적으로 접수되고 있습니다. 신고 내용과 시간대를 별도로 확인할 것.</div>`:""}
-    <button class="action" style="margin-top:15px" onclick="${isJ?"openReports()":"openPeople()"}">${isJ?"목격 신고 내역 확인":"명단으로 돌아가기"}</button>`);
+    <button class="action" style="margin-top:15px" onclick="${isJ?"openReports()":"openPeople()"}">${isJ?"목격 신고 내역 확인":"명단으로 돌아가기"}</button>
+  `);
 }
+
 function openReports(){
-  const list=reports.map((r,i)=>`
-    <div class="report">
-      <div><div class="report-date">${r[0]}</div><div class="report-status">확인 중</div></div>
-      <div>${r[1]}</div>
-    </div>`).join("");
+  const list=reports.map(r=>`
+  <div class="report">
+    <div><div class="report-date">${r[0]}</div><div class="report-status">확인 중</div></div>
+    <div>${r[1]}</div>
+  </div>`).join("");
+
   showWindow("목격자 진술 — WITNESS REPORTS",`
     <div class="sub-label">WITNESS REPORT ARCHIVE</div>
     <div class="section-title">김주은 목격 신고 내역</div>
     <div class="note-box">현재까지 접수된 목격 신고: <strong>${reports.length}건</strong></div>
-    <div class="report-list" style="margin-top:15px">${list}</div>`);
+    <div class="report-list" style="margin-top:15px">${list}</div>
+  `);
 }
+
 function openCCTV(){
   showWindow("CCTV 자료 — VIDEO ARCHIVE",`
     <div class="sub-label">SURVEILLANCE FOOTAGE</div>
     <div class="section-title">영상 자료 목록</div>
     ${["역 주변 CCTV / 2025.01.16","편의점 CCTV / 2025.02.03","주택가 CCTV / 2025.02.19","버스 정류장 CCTV / 2025.06.14"].map((x,i)=>`
-    <div class="file-row"><span>▶</span><span>${x}</span><button onclick="showCCTV(${i})">열기</button></div>`).join("")}`);
+      <div class="file-row"><span>▶</span><span>${x}</span><button onclick="showCCTV(${i})">열기</button></div>
+    `).join("")}
+  `);
 }
+
 function showCCTV(i){
   showWindow("영상 자료 — 재생 정보",`
     <div class="sub-label">VIDEO FILE / 00${i+1}</div>
     <div style="height:210px;background:#030609;display:flex;align-items:center;justify-content:center;color:#77869a;font:12px 'IBM Plex Mono'">NO VIDEO PREVIEW AVAILABLE</div>
-    <div class="note-box">현재 영상 원본이 연결되어 있지 않습니다. 자료가 확보되는 대로 추가할 예정입니다.</div>`);
+    <div class="note-box">현재 영상 원본이 연결되어 있지 않습니다. 자료가 확보되는 대로 추가할 예정입니다.</div>
+  `);
 }
+
 function openTimeline(){
   const events=[
     ["2024.03.17","지우 실종 신고 접수"],
@@ -466,12 +379,18 @@ function openTimeline(){
     ["2025.10.31","예온 실종 신고 접수"],
     ["2026.11.02","김주은 관련 신규 제보 접수"]
   ];
+
   showWindow("사건 타임라인 — CASE TIMELINE",`
     <div class="sub-label">CHRONOLOGICAL RECORD</div>
     <div class="section-title">전체 사건 기록</div>
-    <div class="timeline">${events.map(e=>`
-      <div class="timeline-item"><time>${e[0]}</time>${e[1]}</div>`).join("")}</div>`);
+    <div class="timeline">
+      ${events.map(e=>`
+        <div class="timeline-item"><time>${e[0]}</time>${e[1]}</div>
+      `).join("")}
+    </div>
+  `);
 }
+
 function openNotes(){
   showWindow("수사 기록 — INVESTIGATION NOTES",`
     <div class="sub-label">INTERNAL DOCUMENT</div>
@@ -482,57 +401,87 @@ function openNotes(){
       신고 장소는 서로 연관성이 없는 것으로 보인다.<br>
       일부 신고자는 목격 당시의 상황을 정확히 설명하지 못했다.<br><br>
       추가 확인 필요.
-    </div>`);
+    </div>
+  `);
 }
+
 function openCalls(){
   showWindow("통화 기록 — CALL HISTORY",`
     <div class="sub-label">INCOMING / OUTGOING CALLS</div>
     <div class="section-title">최근 통화 내역</div>
     <div class="file-row">☎　발신자 미상 <span style="margin-left:auto;color:#d5b77d">20:08</span></div>
     <div class="file-row">☎　비공개 번호 <span style="margin-left:auto;color:#8795a8">기록 없음</span></div>
-    <div class="note-box">※ 통화 기록 일부가 삭제되었거나 확인되지 않습니다.</div>`);
+    <div class="note-box">※ 통화 기록 일부가 삭제되었거나 확인되지 않습니다.</div>
+  `);
 }
+
+/* 개인 메모 → 책상 장면 */
 function goRoom(){
   closeWindow();
   $("desktop").classList.remove("active");
   $("room").classList.add("active");
+
+  $("writing").style.display="none";
+  void $("writing").offsetWidth;
   $("writing").style.display="block";
+
   $("phone").classList.remove("ringing");
   setTimeout(()=>$("phone").classList.add("ringing"),8500);
 }
+
 function returnDesktop(){
   $("room").classList.remove("active");
   $("desktop").classList.add("active");
   $("phone").classList.remove("ringing");
 }
+
+/* 전화 */
 let callStarted=false;
+
 function answerCall(){
   $("phone").classList.remove("ringing");
   $("callOverlay").classList.remove("hidden");
   $("callStatus").textContent="00:00　통화 중";
+
   const script="저기요. 실종자 김주은 씨 관련해서 신고하려고 전화했는데요. 오늘 오후에 그 사람을 봤어요. 그런데 조금 이상한 게 있어요. 제가 먼저 알아본 게 아니에요. 그 사람이 저를 먼저 알아봤어요. 그리고 제 이름을 불렀어요.";
+
   $("callText").textContent=script;
+
   if("speechSynthesis" in window){
     speechSynthesis.cancel();
     const utter=new SpeechSynthesisUtterance(script);
-    utter.lang="ko-KR";utter.rate=.88;utter.pitch=.88;
+    utter.lang="ko-KR";
+    utter.rate=.88;
+    utter.pitch=.88;
     speechSynthesis.speak(utter);
   }
+
   callStarted=true;
 }
+
 function endCall(){
   if("speechSynthesis" in window)speechSynthesis.cancel();
+
   $("callOverlay").classList.add("hidden");
   $("callStatus").textContent="통화 종료";
   $("callText").textContent="";
+
   if(callStarted){
-    reports.push(["2026.11.02","신고자가 김주은을 목격했다고 진술. 김주은이 신고자의 이름을 먼저 불렀다고 주장."]);
+    reports.push([
+      "2026.11.02",
+      "신고자가 김주은을 목격했다고 진술. 김주은이 신고자의 이름을 먼저 불렀다고 주장."
+    ]);
+
     returnDesktop();
+
     setTimeout(()=>$("toast").classList.remove("hidden"),700);
     callStarted=false;
   }
 }
-function hideToast(){$("toast").classList.add("hidden")}
+
+function hideToast(){
+  $("toast").classList.add("hidden");
+}
 </script>
 </body>
 </html>
